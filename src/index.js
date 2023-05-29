@@ -9,19 +9,20 @@ const btnLoadMore = document.querySelector('.load-more');
 const galleryRef = document.querySelector('.gallery');
 const apiKey = '36802849-b7af5cd62cfcc85474a5247b9';
 
-let currentPage = 1;
-let currentQuery = '';
-let lightbox;
+export let currentPage = 1;
+export let currentQuery = '';
+// let lightbox = '';
 
-btnLoadMore.addEventListener('click', onLoadMore);
+btnLoadMore.addEventListener('click', () => {
+  currentPage += 1;
+  onLoadMore();
+});
 formRef.addEventListener('submit', onSearch);
 
 const refs = {
-  currentPage,
   fetchImages,
-  currentQuery,
   renderImages,
-  lightbox,
+  // lightbox,
   initializeLightbox,
   hideLoadMoreButton,
   showEndOfResultsMessage,
@@ -38,12 +39,11 @@ async function onSearch(event) {
     .trim()
     .replace(/ /g, '+');
 
+  currentQuery = searchQuery;
+
   if (searchQuery === '') {
     return;
   }
-
-  currentQuery = searchQuery;
-  currentPage = 1;
 
   try {
     const { images, totalHits } = await fetchImages(searchQuery, currentPage);
@@ -55,7 +55,7 @@ async function onSearch(event) {
     renderImages(images);
     showLoadMoreButton();
     showSearchResults(totalHits);
-    initializeLightbox();
+    // initializeLightbox();
   } catch (error) {
     console.error(error);
   }
@@ -135,10 +135,13 @@ function showSearchResults(totalHits) {
 }
 
 function initializeLightbox() {
-  lightbox = new SimpleLightbox('.photo-card .photo-card-link', {
-    captions: true,
-    captionsData: 'alt',
-    captionPosition: 'bottom',
-    captionDelay: 250,
+  let lightbox = new SimpleLightbox('.photo-card-link');
+  lightbox.on('show.simplelightbox', function () {
+    captions: true;
+    captionsData: 'alt';
+    captionPosition: 'bottom';
+    captionDelay: 250;
   });
 }
+
+export { initializeLightbox };
