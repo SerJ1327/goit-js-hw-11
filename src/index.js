@@ -11,7 +11,7 @@ const apiKey = '36802849-b7af5cd62cfcc85474a5247b9';
 
 export let currentPage = 1;
 export let currentQuery = '';
-// let lightbox = '';
+let lightbox = '';
 
 btnLoadMore.addEventListener('click', () => {
   currentPage += 1;
@@ -22,7 +22,7 @@ formRef.addEventListener('submit', onSearch);
 const refs = {
   fetchImages,
   renderImages,
-  // lightbox,
+  lightbox,
   initializeLightbox,
   hideLoadMoreButton,
   showEndOfResultsMessage,
@@ -47,15 +47,19 @@ async function onSearch(event) {
 
   try {
     const { images, totalHits } = await fetchImages(searchQuery, currentPage);
+
     if (images.length === 0) {
       showNoResultsMessage();
       return;
     }
 
     renderImages(images);
-    showLoadMoreButton();
     showSearchResults(totalHits);
-    // initializeLightbox();
+    initializeLightbox();
+
+    if (totalHits > images.length) {
+      showLoadMoreButton();
+    }
   } catch (error) {
     console.error(error);
   }
@@ -135,12 +139,11 @@ function showSearchResults(totalHits) {
 }
 
 function initializeLightbox() {
-  let lightbox = new SimpleLightbox('.photo-card-link');
-  lightbox.on('show.simplelightbox', function () {
-    captions: true;
-    captionsData: 'alt';
-    captionPosition: 'bottom';
-    captionDelay: 250;
+  lightbox = new SimpleLightbox('.photo-card .photo-card-link', {
+    captions: true,
+    captionsData: 'alt',
+    captionPosition: 'bottom',
+    captionDelay: 250,
   });
 }
 

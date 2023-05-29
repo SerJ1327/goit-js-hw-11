@@ -1,7 +1,6 @@
 import refs from './index.js';
 import { currentPage } from './index.js';
 import { currentQuery } from './index.js';
-
 export default async function onLoadMore() {
   try {
     const { images } = await refs.fetchImages(currentQuery, currentPage);
@@ -20,11 +19,9 @@ export default async function onLoadMore() {
       refs.currentPage + 1
     );
 
-    if (nextImages.length === 0) {
+    if (nextImages.length < 0) {
       refs.hideLoadMoreButton();
     }
-
-    refs.lightbox.refs.refresh();
   } catch (error) {
     console.error(error);
   }
