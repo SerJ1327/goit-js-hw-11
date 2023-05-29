@@ -27,18 +27,17 @@ const refs = {
   hideLoadMoreButton,
   showEndOfResultsMessage,
 };
-
 export default refs;
 
 async function onSearch(event) {
   event.preventDefault();
   clearGallery();
+  hideLoadMoreButton();
 
   const searchQuery = event.currentTarget.elements.searchQuery.value
     .toLowerCase()
     .trim()
     .replace(/ /g, '+');
-
   currentQuery = searchQuery;
 
   if (searchQuery === '') {

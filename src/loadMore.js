@@ -13,15 +13,6 @@ export default async function onLoadMore() {
 
     refs.renderImages(images);
     refs.initializeLightbox();
-
-    const { images: nextImages } = await refs.fetchImages(
-      refs.currentQuery,
-      refs.currentPage + 1
-    );
-
-    if (nextImages.length < 0) {
-      refs.hideLoadMoreButton();
-    }
   } catch (error) {
     console.error(error);
   }
