@@ -13,6 +13,11 @@ const PER_PAGE = 40;
 export let currentPage = 1;
 export let currentQuery = '';
 
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 btnLoadMore.addEventListener('click', () => {
   currentPage += 1;
   onLoadMore();
@@ -22,9 +27,8 @@ formRef.addEventListener('submit', onSearch);
 const refs = {
   fetchImages,
   renderImages,
-  // lightbox,
+  lightbox,
   PER_PAGE,
-  initializeLightbox,
   hideLoadMoreButton,
   showEndOfResultsMessage,
 };
@@ -55,7 +59,6 @@ async function onSearch(event) {
 
     renderImages(images);
     showSearchResults(totalHits);
-    initializeLightbox();
 
     if (totalHits > images.length) {
       showLoadMoreButton();
@@ -84,6 +87,7 @@ function renderImages(images) {
     .map(image => createImageCardMarkup(image))
     .join('');
   galleryRef.insertAdjacentHTML('beforeend', cardsMarkup);
+  lightbox.refresh();
 }
 
 function createImageCardMarkup(image) {
@@ -136,15 +140,4 @@ function showEndOfResultsMessage() {
 
 function showSearchResults(totalHits) {
   Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-}
-
-function initializeLightbox() {
-  let lightbox = new SimpleLightbox('.photo-card .photo-card-link', {
-    captions: true,
-    captionsData: 'alt',
-    captionPosition: 'bottom',
-    captionDelay: 250,
-  });
-
-  lightbox.refresh();
 }

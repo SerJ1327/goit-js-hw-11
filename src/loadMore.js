@@ -14,7 +14,7 @@ export default async function onLoadMore() {
     }
 
     refs.renderImages(images);
-    refs.initializeLightbox();
+    lightbox.refresh();
   } catch (error) {
     console.error(error);
   }
