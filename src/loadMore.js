@@ -8,8 +8,6 @@ export default async function onLoadMore() {
     refs.renderImages(images);
     refs.lightbox.refresh();
 
-    console.log(images.length);
-    console.log(refs.PER_PAGE);
     if (images.length < refs.PER_PAGE) {
       refs.hideLoadMoreButton();
       refs.showEndOfResultsMessage();
