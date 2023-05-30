@@ -5,16 +5,16 @@ export default async function onLoadMore() {
   try {
     const { images } = await refs.fetchImages(currentQuery, currentPage);
 
-    console.log(images.length);
+    refs.renderImages(images);
+    refs.lightbox.refresh();
 
+    console.log(images.length);
+    console.log(refs.PER_PAGE);
     if (images.length < refs.PER_PAGE) {
       refs.hideLoadMoreButton();
       refs.showEndOfResultsMessage();
       return;
     }
-
-    refs.renderImages(images);
-    lightbox.refresh();
   } catch (error) {
     console.error(error);
   }
