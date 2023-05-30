@@ -4,10 +4,12 @@ import { currentQuery } from './index.js';
 export default async function onLoadMore() {
   try {
     const { images } = await refs.fetchImages(currentQuery, currentPage);
-    if (images.length === 0) {
+
+    console.log(images.length);
+
+    if (images.length < refs.PER_PAGE) {
       refs.hideLoadMoreButton();
       refs.showEndOfResultsMessage();
-      refs.lightbox.refs.refresh();
       return;
     }
 

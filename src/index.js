@@ -8,10 +8,10 @@ const formRef = document.querySelector('.search-form');
 const btnLoadMore = document.querySelector('.load-more');
 const galleryRef = document.querySelector('.gallery');
 const apiKey = '36802849-b7af5cd62cfcc85474a5247b9';
+const PER_PAGE = 40;
 
 export let currentPage = 1;
 export let currentQuery = '';
-let lightbox = '';
 
 btnLoadMore.addEventListener('click', () => {
   currentPage += 1;
@@ -22,7 +22,8 @@ formRef.addEventListener('submit', onSearch);
 const refs = {
   fetchImages,
   renderImages,
-  lightbox,
+  // lightbox,
+  PER_PAGE,
   initializeLightbox,
   hideLoadMoreButton,
   showEndOfResultsMessage,
@@ -65,7 +66,7 @@ async function onSearch(event) {
 }
 
 function fetchImages(query, page) {
-  const url = `https://pixabay.com/api/?key=${apiKey}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`;
+  const url = `https://pixabay.com/api/?key=${apiKey}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${PER_PAGE}`;
 
   return axios
     .get(url)
@@ -138,12 +139,12 @@ function showSearchResults(totalHits) {
 }
 
 function initializeLightbox() {
-  lightbox = new SimpleLightbox('.photo-card .photo-card-link', {
+  let lightbox = new SimpleLightbox('.photo-card .photo-card-link', {
     captions: true,
     captionsData: 'alt',
     captionPosition: 'bottom',
     captionDelay: 250,
   });
-}
 
-export { initializeLightbox };
+  lightbox.refresh();
+}
